@@ -1,0 +1,28 @@
+version: "3.6"
+services:
+  go_noise:
+    image: golang:1.17-bullseye
+    container_name: go_noise
+    volumes:
+      - ./entrypoint.sh:/entrypoint.sh
+      - go-noise:/go/src/github.com/medunes/go-noise
+    environment:
+      GOPATH: "/go"
+      GO111MODULE: 'on'
+      APP_NAME: github.com/medunes/go-noise
+      APP_PATH: /go/src/github.com/medunes/go-noise
+
+    working_dir: /go/src/github.com/medunes/go-noise
+    tty: true
+    command: tail -f /dev/null
+    ports:
+      - 8877:8080
+
+volumes:
+  go-noise:
+    name: go-noise
+    driver: local
+    driver_opts:
+      type: none
+      device: .
+      o: bind
